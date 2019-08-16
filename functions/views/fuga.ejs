@@ -1,0 +1,18 @@
+<!doctype html>
+  <head>
+    <title><%= tag.id %></title>
+  </head>
+  <body>
+  <p><a href="/">/</a></p>
+  <p><a href="/tags">tags</a></p>
+  <ul>
+    <li>
+      <a href="/tags/<%= tag.id %>">
+        <p>tag : <%= tag.id %></p>
+        <p>count : <%= tag.count %></p>
+      </a>
+    </li>
+  </ul>
+  </body>
+  <script src="/script.js"></script>
+</html>

@@ -36,5 +36,4 @@ document.getElementById('send').addEventListener('click', () => {
   }).catch(function(error) {
     console.error("Error adding document: ", error);
   });
-
 });

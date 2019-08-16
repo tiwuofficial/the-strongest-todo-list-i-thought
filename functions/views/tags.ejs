@@ -1,0 +1,19 @@
+<!doctype html>
+  <head>
+    <title>Tags</title>
+  </head>
+  <body>
+
+  <ul>
+    <% for (var tag of tags) { %>
+    <li>
+      <a href="/tags/<%= tag.id %>">
+        <p>tag : <%= tag.id %></p>
+        <p>count : <%= tag.count %></p>
+      </a>
+    </li>
+    <% } %>
+  </ul>
+  </body>
+  <script src="/script.js"></script>
+</html>
