@@ -1,41 +1,40 @@
-/**
- * Copyright 2018 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+const firebaseConfig = {
+  apiKey: "AIzaSyCxOJPZH2N7QVToAGA6WKf8Emg75Acta8s",
+  authDomain: "the-strongest-todo-list.firebaseapp.com",
+  databaseURL: "https://the-strongest-todo-list.firebaseio.com",
+  projectId: "the-strongest-todo-list",
+  storageBucket: "the-strongest-todo-list.appspot.com",
+  messagingSenderId: "62274701085",
+  appId: "1:62274701085:web:a1ed5fd64a2a35e1"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
-function refresh(_this) {
-  // Disable the button and remove current BONGS text.
-  _this.disabled = true;
-  document.getElementById('bongs').innerHTML = '...';
-
-  // Prepare an ajax request to use the API to get the current BONGS from the API.
-  var request = new XMLHttpRequest();
-  request.onreadystatechange = function() {
-    if (request.readyState === 4) {
-      // Re-enable the button.
-      _this.disabled = false;
-      var bongsContainer = document.getElementById('bongs');
-      if (request.status === 200) {
-        // Replace the BONG text with the response from the API.
-        bongsContainer.innerHTML = JSON.parse(request.responseText).bongs;
-      } else {
-        bongsContainer.innerHTML = 'An error occurred during your request: ' +  request.status + ' ' + request.statusText;
-      }
+document.getElementById('send').addEventListener('click', () => {
+  let list = [];
+  document.querySelectorAll('.tag').forEach(elm => {
+    if (elm.value) {
+      list.push(elm.value);
+      const ref = db.collection('test2').doc(elm.value);
+      ref.set({
+        count: firebase.firestore.FieldValue.increment(1)
+      }, {
+        merge: true
+      });
     }
-  }
-  request.open('Get', '/api');
+  });
 
-  // Start the ajax request.
-  request.send();
-}
+  db.collection("test").add({
+    url: document.getElementById('url').value,
+    repository_url: document.getElementById('repository_url').value,
+    title: document.getElementById('title').value,
+    comment: document.getElementById('comment').value,
+    list: list
+  }).then(function(docRef) {
+    console.log("Document written with ID: ", docRef.id);
+  }).catch(function(error) {
+    console.error("Error adding document: ", error);
+  });
+
+});

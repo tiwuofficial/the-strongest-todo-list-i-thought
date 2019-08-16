@@ -2,11 +2,21 @@
   <head>
     <title>Time</title>
     <link rel="stylesheet" href="/style.css">
-    <script src="/script.js"></script>
   </head>
   <body>
-  <h1>hoge</h1>
   <a href="/">/</a>
-  <a href="/hoge">hoge</a>
+  <ul>
+    <li>url : <%= item.url %></li>
+    <li>repository_url : <%= item.repository_url %></li>
+    <li>title : <%= item.title %></li>
+    <li>comment : <%- item.comment %></li>
+    <% if (item.list) { %>
+      <ul>
+        <% for (var tag of item.list) { %>
+          <li><%= tag %></li>
+        <% } %>
+      </ul>
+    <% } %>
+  </ul>
   </body>
 </html>

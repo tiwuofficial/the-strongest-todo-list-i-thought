@@ -2,15 +2,40 @@
   <head>
     <title>Time</title>
     <link rel="stylesheet" href="/style.css">
-    <script src="/script.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.4.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.4.0/firebase-firestore.js"></script>
   </head>
   <body>
-  <a href="/">/</a>
-  <a href="/hoge">hoge</a>
+  <form>
+    <input type="text" id="url">
+    <input type="text" id="repository_url">
+    <input type="text" id="title">
+    <textarea id="comment" cols="30" rows="10"></textarea>
+    <input type="text" class="tag">
+    <input type="text" class="tag">
+    <input type="text" class="tag">
+    <input type="text" class="tag">
+    <input type="text" class="tag">
+    <button type="button" id="send">send</button>
+  </form>
+
   <ul>
-    <% for (let item of items) { %>
-    <li><%- item.name %></li>
+    <% for (var item of items) { %>
+    <li>
+      <a href="/item/<%= item.id %>">
+        <p>url : <%= item.url %></p>
+        <p>repository_url : <%= item.repository_url %></p>
+        <p>title : <%= item.title %></p>
+        <p>comment : <%- item.comment %></p>
+        <% if (item.list) { %>
+          <% for (var tag of item.list) { %>
+            <p><%= tag %></p>
+          <% } %>
+        <% } %>
+      </a>
+    </li>
     <% } %>
   </ul>
   </body>
+  <script src="/script.js"></script>
 </html>
