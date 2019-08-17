@@ -35,6 +35,7 @@ document.getElementById('send').addEventListener('click', async () => {
     title: document.getElementById('title').value,
     comment: document.getElementById('comment').value,
     list: list,
-    imageUrl: imageUrl
+    imageUrl: imageUrl,
+    uid: firebase.auth().currentUser.uid
   });
 });

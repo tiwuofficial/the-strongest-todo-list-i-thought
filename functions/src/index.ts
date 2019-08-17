@@ -20,6 +20,10 @@ app.get('/', async (req, res) => {
     });
 });
 
+app.get('/create', async (req, res) => {
+    res.status(200).render('create');
+});
+
 app.get('/item/:item', async (req, res) => {
     const item = await db.collection('test').doc(req.params.item).get();
     res.status(200).render('hoge', {
