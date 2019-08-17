@@ -42,13 +42,19 @@ app.get('/tags', async (req, res) => {
 
 app.get('/tags/:tag', async (req, res) => {
     const tag = await db.collection('test2').doc(req.params.tag).get();
-    // todo tagを持つitemを取得するクエリーを書く
+    const list = await db.collection('test').where('list', 'array-contains', req.params.tag).get();
+    let items:object[] = [];
+    list.forEach(item => {
+        items.push(Object.assign(item.data(), {
+            id: item.id
+        }));
+    });
     res.status(200).render('fuga', {
         tag: Object.assign(tag.data(), {
             id: tag.id
-        })
+        }),
+        items: items
     });
 });
-
 
 exports.app = functions.https.onRequest(app);
