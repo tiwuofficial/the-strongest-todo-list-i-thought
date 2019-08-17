@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="/style.css">
   <script src="https://www.gstatic.com/firebasejs/6.4.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/6.4.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.4.0/firebase-storage.js"></script>
   </head>
   <body>
 
@@ -21,6 +22,7 @@
     <input type="text" class="tag">
     <input type="text" class="tag">
     <input type="text" class="tag">
+    <input type="file" id="file">
     <button type="button" id="send">send</button>
   </form>
 
@@ -36,6 +38,9 @@
           <% for (var tag of item.list) { %>
             <p><%= tag %></p>
           <% } %>
+        <% } %>
+        <% if (item.imageUrl) { %>
+          <img src="<%= item.imageUrl %>" alt="">
         <% } %>
       </a>
     </li>
