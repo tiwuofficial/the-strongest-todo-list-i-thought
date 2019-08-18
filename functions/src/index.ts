@@ -12,11 +12,21 @@ app.get('/', async (req, res) => {
     let items:object[] = [];
     list.forEach(item => {
         items.push(Object.assign(item.data(), {
+            id: item.id,
+            escapeTags: JSON.stringify(item.data().list)
+        }));
+    });
+
+    const tagList = await db.collection('test2').orderBy('count', 'desc').get();
+    let tags:object[] = [];
+    tagList.forEach(item => {
+        tags.push(Object.assign(item.data(), {
             id: item.id
         }));
     });
     res.status(200).render('index', {
-        items: items
+        items: items,
+        tags: tags
     });
 });
 

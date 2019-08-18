@@ -1,43 +1,63 @@
 <!doctype html>
   <head>
-    <title>Index</title>
-    <link rel="stylesheet" href="/style.css">
-  <script src="https://www.gstatic.com/firebasejs/6.4.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/6.4.0/firebase-firestore.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/6.4.0/firebase-storage.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/6.4.0/firebase-auth.js"></script>
-</head>
+    <title>My Best Todo List</title>
+    <script src="https://www.gstatic.com/firebasejs/6.4.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.4.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.4.0/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.4.0/firebase-auth.js"></script>
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyCxOJPZH2N7QVToAGA6WKf8Emg75Acta8s",
+        authDomain: "the-strongest-todo-list.firebaseapp.com",
+        databaseURL: "https://the-strongest-todo-list.firebaseio.com",
+        projectId: "the-strongest-todo-list",
+        storageBucket: "gs://the-strongest-todo-list.appspot.com/",
+        messagingSenderId: "62274701085",
+        appId: "1:62274701085:web:a1ed5fd64a2a35e1"
+      };
+      firebase.initializeApp(firebaseConfig);
+    </script>
+    <script src="/web-components/header.js"></script>
+    <script src="/web-components/list.js"></script>
+    <script src="/web-components/todo-list-card.js"></script>
+    <script src="/web-components/tag.js"></script>
+  </head>
   <body>
-    <p>
-      <a href="/tags">tags</a>
-    </p>
-    <p>
-      <a href="/create">create</a>
-    </p>
+    <mbtl-header></mbtl-header>
 
-    <button id="login">Login</button>
-    <button id="logout">Logout</button>
+    <h1>This Is My Best Todo List!</h1>
 
-    <ul>
+    <mbtl-list>
       <% for (var item of items) { %>
       <li>
-        <a href="/item/<%= item.id %>">
-          <p>url : <%= item.url %></p>
-          <p>repository_url : <%= item.repository_url %></p>
-          <p>title : <%= item.title %></p>
-          <p>comment : <%- item.comment %></p>
-          <% if (item.list) { %>
-            <% for (var tag of item.list) { %>
-              <p><%= tag %></p>
-            <% } %>
-          <% } %>
-          <% if (item.imageUrl) { %>
-            <img src="<%= item.imageUrl %>" alt="">
-          <% } %>
-        </a>
+        <mbtl-todo-list-card
+          href="/item/<%= item.id %>"
+          src="<%= item.imageUrl %>"
+          title="<%= item.title %>"
+          tags="<%= item.escapeTags %>"
+        >
+        </mbtl-todo-list-card>
       </li>
       <% } %>
-    </ul>
-    <script src="/index.js"></script>
+    </mbtl-list>
+
+    <h2>Popular Tag!</h2>
+
+    <mbtl-list>
+      <% for (var tag of tags) { %>
+      <li>
+        <mbtl-tag
+          href="/tags/<%= tag.id %>"
+          tag="<%= tag.id %>"
+          count="<%= tag.count %>"
+        >
+        </mbtl-tag>
+      </li>
+      <% } %>
+    </mbtl-list>
+
+  <h2>Introduction</h2>
+
+  <p>hoge hoge hoge</p>
   </body>
 </html>

@@ -1,18 +1,23 @@
 <!doctype html>
   <head>
     <title>Tags</title>
+    <script src="/web-components/list.js"></script>
+    <script src="/web-components/tag.js"></script>
   </head>
   <body>
 
-  <ul>
-    <% for (var tag of tags) { %>
-    <li>
-      <a href="/tags/<%= tag.id %>">
-        <p>tag : <%= tag.id %></p>
-        <p>count : <%= tag.count %></p>
-      </a>
-    </li>
-    <% } %>
-  </ul>
+    <h2>Popular Tag!</h2>
+    <mbtl-list>
+      <% for (var tag of tags) { %>
+      <li>
+        <mbtl-tag
+          href="/tags/<%= tag.id %>"
+          tag="<%= tag.id %>"
+          count="<%= tag.count %>"
+        >
+        </mbtl-tag>
+      </li>
+      <% } %>
+    </mbtl-list>
   </body>
 </html>
