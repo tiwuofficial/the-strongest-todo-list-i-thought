@@ -4,6 +4,7 @@ class List extends HTMLElement {
     this.attachShadow({mode: 'open'}).innerHTML = `
       <style>
        :host {
+          display: block;
         }
     
         ul {
@@ -11,6 +12,8 @@ class List extends HTMLElement {
           display: flex;
           justify-content: space-around;
           flex-wrap: wrap;
+          margin: 0;
+          padding: 0;
         }
     
         @media (max-width: 1100px) {

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Detail</title>
+    <%- include('./common/meta') %>
+    <%- include('./common/firebaseHeader') %>
+    <%- include('./common/script') %>
+    <%- include('./common/style') %>
+    <script src="/web-components/section.js"></script>
+    <script src="/web-components/todo-list-detail.js"></script>
+    <style>
+      mbtl-header + mbtl-section {
+        margin-top: 5vw;
+      }
+    </style>
+  </head>
+  <body>
+    <mbtl-header></mbtl-header>
+
+    <mbtl-section>
+      <mbtl-todo-list-detail
+        title="<%= item.title %>"
+        url="<%= item.url %>"
+        repository-url="<%= item.repository_url %>"
+        comment="<%- item.comment %>"
+        img-url="<%= item.imageUrl %>"
+        tags="<%= item.escapeTags %>"
+      ></mbtl-todo-list-detail>
+    </mbtl-section>
+  </body>
+</html>

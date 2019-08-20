@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Tags</title>
+    <title><%= tag.id %></title>
     <%- include('./common/meta') %>
     <%- include('./common/firebaseHeader') %>
     <%- include('./common/script') %>
     <script src="/web-components/list.js"></script>
-    <script src="/web-components/tag.js"></script>
     <script src="/web-components/section.js"></script>
+    <script src="/web-components/todo-list-card.js"></script>
     <%- include('./common/style') %>
     <style>
       mbtl-header + mbtl-section {
@@ -21,18 +21,20 @@
   </head>
   <body>
     <mbtl-header></mbtl-header>
+
     <mbtl-section>
-      <h1>This Is All Tag List!</h1>
+      <h1>This Is <%= tag.id %> Todo List!</h1>
 
       <mbtl-list>
-        <% for (var tag of tags) { %>
+        <% for (var item of items) { %>
         <li>
-          <mbtl-tag
-            href="/tags/<%= tag.id %>"
-            tag="<%= tag.id %>"
-            count="<%= tag.count %>"
+          <mbtl-todo-list-card
+            href="/item/<%= item.id %>"
+            src="<%= item.imageUrl %>"
+            title="<%= item.title %>"
+            tags="<%= item.escapeTags %>"
           >
-          </mbtl-tag>
+          </mbtl-todo-list-card>
         </li>
         <% } %>
       </mbtl-list>

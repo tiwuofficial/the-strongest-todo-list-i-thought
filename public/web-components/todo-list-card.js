@@ -29,6 +29,7 @@ class Card extends HTMLElement {
         a {
           text-decoration: none;
           color: #000;
+          background-color: #fff;
           text-align: left;
           display: block;
           border-radius: 6px;
@@ -85,7 +86,7 @@ class Card extends HTMLElement {
       </style>
       <a href="${this.getAttribute('href')}">
         <div class="img-wrap">
-          <img src="${src}">
+          <img src="${src}" alt="screen shot">
         </div>
         <div class="text-wrap">
           <p class="title">${this.getAttribute('title')}</p>

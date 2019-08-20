@@ -1,63 +1,77 @@
-<!doctype html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
     <title>My Best Todo List</title>
-    <script src="https://www.gstatic.com/firebasejs/6.4.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/6.4.0/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/6.4.0/firebase-storage.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/6.4.0/firebase-auth.js"></script>
-    <script>
-      const firebaseConfig = {
-        apiKey: "AIzaSyCxOJPZH2N7QVToAGA6WKf8Emg75Acta8s",
-        authDomain: "the-strongest-todo-list.firebaseapp.com",
-        databaseURL: "https://the-strongest-todo-list.firebaseio.com",
-        projectId: "the-strongest-todo-list",
-        storageBucket: "gs://the-strongest-todo-list.appspot.com/",
-        messagingSenderId: "62274701085",
-        appId: "1:62274701085:web:a1ed5fd64a2a35e1"
-      };
-      firebase.initializeApp(firebaseConfig);
-    </script>
-    <script src="/web-components/header.js"></script>
+    <%- include('./common/meta') %>
+    <%- include('./common/firebaseHeader') %>
+    <%- include('./common/script') %>
     <script src="/web-components/list.js"></script>
     <script src="/web-components/todo-list-card.js"></script>
     <script src="/web-components/tag.js"></script>
+    <script src="/web-components/section.js"></script>
+    <%- include('./common/style') %>
+    <style>
+      mbtl-header + mbtl-section {
+        margin-top: 5vw;
+      }
+
+      h1 + mbtl-list  {
+        margin-top: 50px;
+      }
+
+      h2 + mbtl-list {
+        margin-top: 20px;
+      }
+
+      h2 + p {
+        margin-top: 20px;
+      }
+    </style>
   </head>
   <body>
     <mbtl-header></mbtl-header>
 
-    <h1>This Is My Best Todo List!</h1>
+    <mbtl-section>
+      <h1>This Is My Best Todo List!</h1>
 
-    <mbtl-list>
-      <% for (var item of items) { %>
-      <li>
-        <mbtl-todo-list-card
-          href="/item/<%= item.id %>"
-          src="<%= item.imageUrl %>"
-          title="<%= item.title %>"
-          tags="<%= item.escapeTags %>"
-        >
-        </mbtl-todo-list-card>
-      </li>
-      <% } %>
-    </mbtl-list>
+      <mbtl-list>
+        <% for (var item of items) { %>
+          <li>
+            <mbtl-todo-list-card
+              href="/item/<%= item.id %>"
+              src="<%= item.imageUrl %>"
+              title="<%= item.title %>"
+              tags="<%= item.escapeTags %>"
+            >
+            </mbtl-todo-list-card>
+          </li>
+        <% } %>
+      </mbtl-list>
+    </mbtl-section>
 
-    <h2>Popular Tag!</h2>
+    <mbtl-section class="white">
+      <h2>Popular Tag!</h2>
 
-    <mbtl-list>
-      <% for (var tag of tags) { %>
-      <li>
-        <mbtl-tag
-          href="/tags/<%= tag.id %>"
-          tag="<%= tag.id %>"
-          count="<%= tag.count %>"
-        >
-        </mbtl-tag>
-      </li>
-      <% } %>
-    </mbtl-list>
+      <mbtl-list>
+        <% for (var tag of tags) { %>
+        <li>
+          <mbtl-tag
+            href="/tags/<%= tag.id %>"
+            tag="<%= tag.id %>"
+            count="<%= tag.count %>"
+          >
+          </mbtl-tag>
+        </li>
+        <% } %>
+      </mbtl-list>
+    </mbtl-section>
 
-  <h2>Introduction</h2>
+    <mbtl-section>
+      <h2>Introduction</h2>
 
-  <p>hoge hoge hoge</p>
+      <p>This site was created to share the my best todo list that I created.</p>
+      <p>Also created to learn from the todo list created by others.</p>
+      <p>If you like, please post the created todo list.</p>
+    </mbtl-section>
   </body>
 </html>

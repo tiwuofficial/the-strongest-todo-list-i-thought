@@ -18,6 +18,7 @@ class Tag extends HTMLElement {
           display: block;
           padding: 5px 15px;
           border-radius: 6px;
+          background-color: #fff;
         }
     
         .tag {

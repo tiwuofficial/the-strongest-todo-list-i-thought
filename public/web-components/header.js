@@ -9,7 +9,8 @@ class Header extends HTMLElement {
        :host {
           height: 50px;
           display: flex;
-          padding: 0 50px;
+          width: 1000px;
+          margin: 0 auto;
         }
     
         .item {
@@ -30,6 +31,9 @@ class Header extends HTMLElement {
           text-decoration: none;
         }
     
+        .item.is-hidden {
+          display: none;
+        }
     
         @media (max-width: 1100px) {
           .item {
@@ -51,10 +55,10 @@ class Header extends HTMLElement {
       <div class="item">
         <a href="/create" class="link">Post</a>
       </div>
-      <div class="item" id="login">
+      <div class="item is-hidden" id="login">
         <a href="javascript:void(0);" class="link">GitHub Login</a>
       </div>
-      <div class="item" id="logout">
+      <div class="item is-hidden" id="logout">
         <a href="javascript:void(0);" class="link">Logout</a>
       </div>
     `;
@@ -65,8 +69,18 @@ class Header extends HTMLElement {
       firebase.auth().getRedirectResult().then(() => {}).catch(() => {});
     });
 
-    shadowRoot.getElementById('login').addEventListener('click', () => {
-      firebase.auth().signOut().then(() => {}).catch(() => {});
+    shadowRoot.getElementById('logout').addEventListener('click', () => {
+      firebase.auth().signOut().then(() => {
+        location.reload();
+      }).catch(() => {});
+    });
+
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        shadowRoot.getElementById('logout').classList.remove('is-hidden');
+      } else {
+        shadowRoot.getElementById('login').classList.remove('is-hidden');
+      }
     });
   }
 }
