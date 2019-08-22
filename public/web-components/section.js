@@ -43,8 +43,15 @@ class Section extends HTMLElement {
           font-size: 17px;
           line-height: 30px;
         }
+        
+        section {
+          margin: 0 auto;
+          width: 1000px;
+        }
       </style>
-      <slot></slot>
+      <section>
+        <slot></slot>
+      </section>
     `;
   }
 }

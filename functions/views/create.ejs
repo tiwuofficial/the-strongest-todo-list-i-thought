@@ -3,32 +3,30 @@
   <head>
     <title>Index</title>
     <%- include('./common/meta') %>
+    <%- include('./common/firebaseHeader') %>
     <%- include('./common/script') %>
-    <link rel="stylesheet" href="/style.css">
-  <script src="https://www.gstatic.com/firebasejs/6.4.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/6.4.0/firebase-firestore.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/6.4.0/firebase-storage.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/6.4.0/firebase-auth.js"></script>
-
+    <%- include('./common/style') %>
+    <script src="/web-components/section.js"></script>
+    <style>
+      h1 + mbtl-form  {
+        margin-top: 50px;
+      }
+    </style>
 </head>
   <body>
+    <mbtl-header></mbtl-header>
 
-  <p>
-    <a href="/tags">tags</a>
-  </p>
-  <form>
-    <input type="text" id="url">
-    <input type="text" id="repository_url">
-    <input type="text" id="title">
-    <textarea id="comment" cols="30" rows="10"></textarea>
-    <input type="text" class="tag">
-    <input type="text" class="tag">
-    <input type="text" class="tag">
-    <input type="text" class="tag">
-    <input type="text" class="tag">
-    <input type="file" id="file">
-    <button type="button" id="send">send</button>
-  </form>
+    <mbtl-section>
+      <h1>Post Your Best Todo List!</h1>
+
+      <mbtl-form></mbtl-form>
+    </mbtl-section>
+
+    <script src="/web-components/form.js"></script>
+    <script src="/web-components/fieldset.js"></script>
+    <script src="/web-components/img-fieldset.js"></script>
+    <script src="/web-components/button-fieldset.js"></script>
+    <script src="/web-components/input.js"></script>
+    <script src="/web-components/button.js"></script>
   </body>
-  <script src="/script.js"></script>
 </html>
