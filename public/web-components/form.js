@@ -20,7 +20,31 @@ class Form extends HTMLElement {
         mbtl-input + mbtl-input {
           margin-top: 30px;
         }
+        
+        .login-text {
+          text-align: center;
+          margin: 0;
+          font-size: 24px;
+          color: #fffb00;
+        }
+        
+        .login-link {
+          color: #fffb00;
+        }
+        
+        .is-hidden {
+          display: none;
+        }
+        
+        .login-text:not(.is-hidden) + mbtl-fieldset {
+          margin-top: 20px;
+        } 
       </style>
+      
+      <p id="login" class="login-text is-hidden">
+        Required <a href="javascript:void(0);" class="login-link" id="login-link">GitHub Login!</a>
+      </p>
+      
 
       <mbtl-fieldset
         label-for="url"
@@ -93,6 +117,26 @@ class Form extends HTMLElement {
         </mbtl-button>
       </mbtl-button-fieldset>
     `;
+
+    this.shadowRoot.getElementById('login-link').addEventListener('click', () => {
+      const provider = new firebase.auth.GithubAuthProvider();
+      firebase.auth().signInWithRedirect(provider);
+      firebase.auth().getRedirectResult().then(() => {}).catch(() => {});
+    });
+
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.shadowRoot.getElementById('logout').classList.remove('is-hidden');
+      } else {
+        this.shadowRoot.getElementById('login').classList.remove('is-hidden');
+        this.shadowRoot.querySelectorAll('input').forEach(elm => {
+          elm.setAttribute('disabled', true);
+        });
+        this.shadowRoot.querySelector('textarea').setAttribute('disabled', true);
+        this.shadowRoot.querySelector('button').setAttribute('disabled', true);
+        this.shadowRoot.querySelector('.img-fieldset__label').classList.add('is-disabled');
+      }
+    });
 
     const db = firebase.firestore();
 

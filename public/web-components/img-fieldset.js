@@ -41,6 +41,10 @@ class IMGFieldset extends HTMLElement {
           opacity: 0.9;
         }
         
+        .img-fieldset__label.is-disabled {
+          color: graytext;
+        }
+        
         .img-fieldset__title + .img-fieldset__img,
         .img-fieldset__img + .img-fieldset__label {
           margin-top: 20px;

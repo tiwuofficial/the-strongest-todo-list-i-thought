@@ -24,6 +24,11 @@ class Input extends HTMLElement {
           -webkit-appearance: none;
           -moz-appearance: none;
         }
+        
+        ::slotted(input:disabled),
+        ::slotted(textarea:disabled) {
+          background-color: #e9eced;
+        }
       </style>
       <slot></slot>
     `;
