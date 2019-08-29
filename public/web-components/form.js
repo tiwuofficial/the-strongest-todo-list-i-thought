@@ -71,7 +71,7 @@ class Form extends HTMLElement {
         required
       >
         <mbtl-input>
-          <input type="text" name="title" id="title">
+          <input type="text" name="title" id="title" required>
         </mbtl-input>
       </mbtl-fieldset>
 
@@ -81,7 +81,7 @@ class Form extends HTMLElement {
         required
       >
         <mbtl-input>
-          <textarea id="comment" name="comment" cols="30" rows="10"></textarea>
+          <textarea id="comment" name="comment" cols="30" rows="10" required></textarea>
         </mbtl-input>
       </mbtl-fieldset>
 
@@ -113,7 +113,7 @@ class Form extends HTMLElement {
 
       <mbtl-button-fieldset>
         <mbtl-button>
-          <button type="button" id="send">send</button>
+          <button type="button" id="send" disabled>send</button>
         </mbtl-button>
       </mbtl-button-fieldset>
     `;
@@ -124,21 +124,23 @@ class Form extends HTMLElement {
       firebase.auth().getRedirectResult().then(() => {}).catch(() => {});
     });
 
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        this.shadowRoot.getElementById('logout').classList.remove('is-hidden');
-      } else {
+        this.shadowRoot.querySelectorAll(':required').forEach(elm => {
+          elm.addEventListener('input', validation);
+        });
+        this.shadowRoot.querySelectorAll('.tag').forEach(elm => {
+          elm.addEventListener('input', validation);
+        });
+      }else {
         this.shadowRoot.getElementById('login').classList.remove('is-hidden');
         this.shadowRoot.querySelectorAll('input').forEach(elm => {
           elm.setAttribute('disabled', true);
         });
         this.shadowRoot.querySelector('textarea').setAttribute('disabled', true);
-        this.shadowRoot.querySelector('button').setAttribute('disabled', true);
         this.shadowRoot.querySelector('.img-fieldset__label').classList.add('is-disabled');
       }
     });
-
-    const db = firebase.firestore();
 
     this.shadowRoot.getElementById('send').addEventListener('click', async () => {
       const files = this.shadowRoot.getElementById('file').files;
@@ -153,7 +155,7 @@ class Form extends HTMLElement {
       this.shadowRoot.querySelectorAll('.tag').forEach(elm => {
         if (elm.value) {
           list.push(elm.value);
-          const ref = db.collection('test2').doc(elm.value);
+          const ref = firebase.firestore().collection('test2').doc(elm.value);
           ref.set({
             count: firebase.firestore.FieldValue.increment(1)
           }, {
@@ -162,7 +164,7 @@ class Form extends HTMLElement {
         }
       });
 
-      db.collection("test").add({
+      firebase.firestore().collection("test").add({
         url: this.shadowRoot.getElementById('url').value,
         repository_url: this.shadowRoot.getElementById('repository_url').value,
         title: this.shadowRoot.getElementById('title').value,
@@ -170,8 +172,28 @@ class Form extends HTMLElement {
         list: list,
         imageUrl: imageUrl,
         uid: firebase.auth().currentUser.uid
-      });
+      }).then(function(docRef) {
+        console.log("Document written with ID: ", docRef.id);
+      }).catch(function(error) {
+          console.error("Error adding document: ", error);
+        });
     });
+
+    const validation = () => {
+      const input = Array.prototype.slice.call(this.shadowRoot.querySelectorAll(':required')).every(e => {
+        return e.value.trim() !== '';
+      });
+
+      const tag = Array.prototype.slice.call(this.shadowRoot.querySelectorAll('.tag')).some(e => {
+        return e.value.trim() !== '';
+      });
+
+      if (input && tag) {
+        this.shadowRoot.querySelector('button').removeAttribute('disabled');
+      } else {
+        this.shadowRoot.querySelector('button').setAttribute('disabled', true);
+      }
+    }
   }
 }
 customElements.define('mbtl-form', Form);

@@ -43,6 +43,7 @@ class IMGFieldset extends HTMLElement {
         
         .img-fieldset__label.is-disabled {
           color: graytext;
+          cursor: default;
         }
         
         .img-fieldset__title + .img-fieldset__img,

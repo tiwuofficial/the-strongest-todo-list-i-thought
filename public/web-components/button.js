@@ -15,6 +15,7 @@ class Button extends HTMLElement {
           padding: 0 5px;
           font-size: 16px;
           box-sizing: border-box;
+          cursor: pointer;
         }
       </style>
       <slot></slot>
