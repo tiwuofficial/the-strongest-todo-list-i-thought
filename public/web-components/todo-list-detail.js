@@ -53,7 +53,7 @@ class Detail extends HTMLElement {
       
       <div class="info">
         <h1>Title : ${this.getAttribute('title')}</h1>
-        <p>Author : tiwu</p>
+        <p>Author : <a href="${this.getAttribute('user-url')}" target="_blank">${this.getAttribute('user-name')}</a></p>
         <p>Url : <a href="${this.getAttribute('url')}">${this.getAttribute('url')}</a></p>
         <p>Repository Url : <a href="${this.getAttribute('repository-url')}">${this.getAttribute('repository-url')}</a></p>
         <h3>Comment</h3>

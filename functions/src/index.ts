@@ -1,6 +1,7 @@
 import * as functions from 'firebase-functions';
 import * as express from 'express';
 import * as admin  from 'firebase-admin';
+import * as https from 'https';
 
 admin.initializeApp(functions.config().firebase);
 const db = admin.firestore();
@@ -34,14 +35,54 @@ app.get('/create', async (req, res) => {
     res.status(200).render('create');
 });
 
-app.get('/item/:item', async (req, res) => {
+app.get('/todoLists', async (req, res) => {
+    const list = await db.collection('test').get();
+    let items:object[] = [];
+    list.forEach(item => {
+        items.push(Object.assign(item.data(), {
+            id: item.id,
+            escapeTags: JSON.stringify(item.data().list)
+        }));
+    });
+
+    res.status(200).render('todoLists', {
+        items: items
+    });
+});
+
+async function fetchGitHubApi(path:string) {
+    return new Promise((resolve, reject) => {
+        https.get({
+            hostname: 'api.github.com',
+            path: path,
+            headers: { 'User-Agent': 'Mozilla/5.0' }
+        },  (res) => {
+            res.setEncoding('utf8');
+            let body = '';
+            res.on('data',  (chunk) => {
+                body += chunk;
+            });
+            res.on('end', () => {
+                resolve(JSON.parse(body));
+            });
+        }).on('error', error => {
+            reject(error);
+        });
+    })
+}
+
+app.get('/todoLists/:item', async (req, res) => {
     const item = await db.collection('test').doc(req.params.item).get();
     const data:any = item.data();
+    const user:any = await admin.auth().getUser(data.uid);
+    const gitHubUser = await fetchGitHubApi(`/user/${user.providerData.shift().uid}`);
+
     res.status(200).render('todoListDetail', {
         item: Object.assign(data, {
             id: item.id,
             escapeTags: JSON.stringify(data.list)
-        })
+        }),
+        user: gitHubUser
     });
 });
 

@@ -7,6 +7,11 @@ class Form extends HTMLElement {
         :host {
           display: block;
         }
+        
+        mbtl-input:not(:defined),
+        mbtl-button:not(:defined) {
+          display: none;
+        }
 
         mbtl-fieldset + mbtl-fieldset,
         mbtl-fieldset + mbtl-img-fieldset {
@@ -113,16 +118,13 @@ class Form extends HTMLElement {
 
       <mbtl-button-fieldset>
         <mbtl-button>
-          <button type="button" id="send" disabled>send</button>
+          <button type="button" id="send" disabled>
+            <span id="send-text">send</span>
+            <mbtl-loading id="send-loading" class="is-hidden"></mbtl-loading>
+          </button> 
         </mbtl-button>
       </mbtl-button-fieldset>
     `;
-
-    this.shadowRoot.getElementById('login-link').addEventListener('click', () => {
-      const provider = new firebase.auth.GithubAuthProvider();
-      firebase.auth().signInWithRedirect(provider);
-      firebase.auth().getRedirectResult().then(() => {}).catch(() => {});
-    });
 
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
@@ -142,7 +144,22 @@ class Form extends HTMLElement {
       }
     });
 
+    const db = firebase.firestore();
+
+    this.shadowRoot.getElementById('login-link').addEventListener('click', () => {
+      const provider = new firebase.auth.GithubAuthProvider();
+      firebase.auth().signInWithRedirect(provider);
+      firebase.auth().getRedirectResult().then(() => {}).catch(() => {});
+    });
+
     this.shadowRoot.getElementById('send').addEventListener('click', async () => {
+      if (this.shadowRoot.getElementById('send-text').classList.contains('is-hidden')) {
+        return false;
+      }
+
+      this.shadowRoot.getElementById('send-text').classList.add('is-hidden');
+      this.shadowRoot.getElementById('send-loading').classList.remove('is-hidden');
+
       const files = this.shadowRoot.getElementById('file').files;
       let imageUrl = '';
       const image = files[0];
@@ -155,7 +172,7 @@ class Form extends HTMLElement {
       this.shadowRoot.querySelectorAll('.tag').forEach(elm => {
         if (elm.value) {
           list.push(elm.value);
-          const ref = firebase.firestore().collection('test2').doc(elm.value);
+          const ref = db.collection('test2').doc(elm.value);
           ref.set({
             count: firebase.firestore.FieldValue.increment(1)
           }, {
@@ -164,7 +181,7 @@ class Form extends HTMLElement {
         }
       });
 
-      firebase.firestore().collection("test").add({
+      db.collection("test").add({
         url: this.shadowRoot.getElementById('url').value,
         repository_url: this.shadowRoot.getElementById('repository_url').value,
         title: this.shadowRoot.getElementById('title').value,
@@ -172,11 +189,12 @@ class Form extends HTMLElement {
         list: list,
         imageUrl: imageUrl,
         uid: firebase.auth().currentUser.uid
-      }).then(function(docRef) {
-        console.log("Document written with ID: ", docRef.id);
-      }).catch(function(error) {
-          console.error("Error adding document: ", error);
-        });
+      }).then(doc => {
+        location.href = `/todoLists/${doc.id}`;
+      }).catch(() => {
+        this.shadowRoot.getElementById('send-text').classList.remove('is-hidden');
+        this.shadowRoot.getElementById('send-loading').classList.add('is-hidden');
+      });
     });
 
     const validation = () => {

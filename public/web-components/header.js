@@ -50,6 +50,9 @@ class Header extends HTMLElement {
         <a href="/" class="link">My Best Todo List</a>
       </div>
       <div class="item">
+        <a href="/todoLists" class="link">Todo List List</a>
+      </div>
+      <div class="item">
         <a href="/tags" class="link">Tag List</a>
       </div>
       <div class="item">
