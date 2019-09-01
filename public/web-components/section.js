@@ -23,7 +23,7 @@ class Section extends HTMLElement {
           content: "";
           z-index: -1;
           transform: skewY(-2.5deg);
-          background-image: linear-gradient(40deg, #9864f1 20%, #0d11e1 90%);
+          background-image: linear-gradient(36deg,#15eac8,#2ba4f3 52%,#0906e8);
         }
         
         :host(.white)::before {
@@ -47,6 +47,12 @@ class Section extends HTMLElement {
         section {
           margin: 0 auto;
           width: 1000px;
+        }
+        
+        @media (max-width: 600px) {
+          section {
+            width: 100%;
+          }
         }
       </style>
       <section>

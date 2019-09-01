@@ -29,6 +29,13 @@ class Input extends HTMLElement {
         ::slotted(textarea:disabled) {
           background-color: #e9eced;
         }
+        
+        @media (max-width: 600px) {
+          ::slotted(input),
+          ::slotted(textarea) {
+            width: 100%;
+          }
+        }
       </style>
       <slot></slot>
     `;

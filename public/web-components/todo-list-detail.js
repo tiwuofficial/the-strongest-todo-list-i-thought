@@ -40,20 +40,25 @@ class Detail extends HTMLElement {
           color: #fff;
         }
     
-        @media (max-width: 1100px) {
-          .item {
-            display: none;
+        @media (max-width: 600px) {
+          :host {
+            flex-direction: column-reverse;
+            width: 100%;
           }
     
-          .item--logo {
-            display: flex;
+          .info {
+            width: 100%;
+          }
+          
+          img {
+            width: 100%;
           }
         }
       </style>
       
       <div class="info">
         <h1>Title : ${this.getAttribute('title')}</h1>
-        <p>Author : <a href="${this.getAttribute('user-url')}" target="_blank">${this.getAttribute('user-name')}</a></p>
+        <p>Author : ${this.getAttribute('user-name')}</p>
         <p>Url : <a href="${this.getAttribute('url')}">${this.getAttribute('url')}</a></p>
         <p>Repository Url : <a href="${this.getAttribute('repository-url')}">${this.getAttribute('repository-url')}</a></p>
         <h3>Comment</h3>

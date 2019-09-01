@@ -11,6 +11,7 @@
   </head>
   <body>
     <mbtl-header></mbtl-header>
+    <mbtl-side-menu hidden></mbtl-side-menu>
 
     <mbtl-section>
       <mbtl-todo-list-detail
@@ -20,8 +21,7 @@
         comment="<%- item.comment %>"
         img-url="<%= item.imageUrl %>"
         tags="<%= item.escapeTags %>"
-        user-name="<%= user.name %>"
-        user-url="<%= user.html_url %>"
+        user-name="<%= user.displayName %>"
       ></mbtl-todo-list-detail>
     </mbtl-section>
   </body>

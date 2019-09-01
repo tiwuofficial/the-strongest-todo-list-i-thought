@@ -18,6 +18,7 @@ class Fieldset extends HTMLElement {
           display: flex;
         }
         fieldset {
+          width: 100%;
           border: none;
           margin: 0 auto;
           padding: 0;

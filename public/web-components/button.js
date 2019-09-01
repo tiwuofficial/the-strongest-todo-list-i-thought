@@ -17,6 +17,11 @@ class Button extends HTMLElement {
           box-sizing: border-box;
           cursor: pointer;
         }
+        @media (max-width: 600px) {
+          ::slotted(button) {
+            width: 100%;
+          }
+        }
       </style>
       <slot></slot>
     `;

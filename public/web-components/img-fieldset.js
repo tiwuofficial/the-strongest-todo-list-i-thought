@@ -54,6 +54,15 @@ class IMGFieldset extends HTMLElement {
         .img-fieldset__input {
           display: none;
         }  
+        
+        @media (max-width: 600px) {
+          .img-fieldset__label {
+            width: 100%;
+          }
+          .img-fieldset__img {
+            width: 100%;
+          }
+        }
       </style>
       <fieldset class="img-fieldset__fieldset">
         <p class="img-fieldset__title">ScreenShot</p>
