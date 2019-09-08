@@ -41,9 +41,14 @@ class IMGFieldset extends HTMLElement {
           opacity: 0.9;
         }
         
-        .img-fieldset__label.is-disabled {
+        mbtl-img-fieldset.is-disabled img {
+          opacity: 0.8;
+        }
+        
+        mbtl-img-fieldset.is-disabled .img-fieldset__label {
           color: graytext;
           cursor: default;
+          background-color: #e9eced;
         }
         
         .img-fieldset__title + .img-fieldset__img,

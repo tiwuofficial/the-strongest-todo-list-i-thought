@@ -140,7 +140,7 @@ class Form extends HTMLElement {
           elm.setAttribute('disabled', true);
         });
         this.shadowRoot.querySelector('textarea').setAttribute('disabled', true);
-        this.shadowRoot.querySelector('.img-fieldset__label').classList.add('is-disabled');
+        this.shadowRoot.querySelector('mbtl-img-fieldset').classList.add('is-disabled');
       }
     });
 
@@ -162,17 +162,21 @@ class Form extends HTMLElement {
 
       const files = this.shadowRoot.getElementById('file').files;
       let imageUrl = '';
+      let thumbnailImageUrl = '';
       const image = files[0];
       if (image) {
-        await firebase.storage().ref().child(image.name).put(image);
-        imageUrl = await firebase.storage().ref().child(image.name).getDownloadURL();
+        const path = `mbtl_images/${image.name}`;
+        await firebase.storage().ref().child(path).put(image);
+        imageUrl = await firebase.storage().ref().child(path).getDownloadURL();
+        const splitImageUrl = imageUrl.split('mbtl_images%2F');
+        thumbnailImageUrl = `${splitImageUrl[0]}mbtl_images%2Fthumb_${splitImageUrl[1]}`;
       }
 
       let list = [];
       this.shadowRoot.querySelectorAll('.tag').forEach(elm => {
         if (elm.value) {
           list.push(elm.value);
-          const ref = db.collection('test2').doc(elm.value);
+          const ref = db.collection('tags').doc(elm.value);
           ref.set({
             count: firebase.firestore.FieldValue.increment(1)
           }, {
@@ -181,13 +185,14 @@ class Form extends HTMLElement {
         }
       });
 
-      db.collection("test").add({
+      db.collection("todolists").add({
         url: this.shadowRoot.getElementById('url').value,
         repository_url: this.shadowRoot.getElementById('repository_url').value,
         title: this.shadowRoot.getElementById('title').value,
         comment: this.shadowRoot.getElementById('comment').value,
         list: list,
         imageUrl: imageUrl,
+        thumbnailImageUrl: thumbnailImageUrl,
         uid: firebase.auth().currentUser.uid
       }).then(doc => {
         location.href = `/todoLists/${doc.id}`;

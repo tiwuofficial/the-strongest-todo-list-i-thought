@@ -8,10 +8,14 @@ class ButtonFieldset extends HTMLElement {
           display: flex;
         }
         fieldset {
-          width: 100%;
           border: none;
           margin: 0 auto;
           padding: 0;
+        }
+        @media (max-width: 600px) {
+          fieldset {
+            width: 100%;
+          }
         }
       </style>
       <fieldset>

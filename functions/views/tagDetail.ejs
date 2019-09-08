@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title><%= tag.id %></title>
     <%- include('./common/meta') %>
     <%- include('./common/firebaseHeader') %>
     <%- include('./common/script') %>
@@ -28,6 +27,7 @@
           <mbtl-todo-list-card
             href="/todoLists/<%= item.id %>"
             src="<%= item.imageUrl %>"
+            thumbnail-src="<%= item.thumbnailImageUrl %>"
             title="<%= item.title %>"
             tags="<%= item.escapeTags %>"
           >

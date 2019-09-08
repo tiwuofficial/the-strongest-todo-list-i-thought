@@ -44,12 +44,21 @@ class Section extends HTMLElement {
           line-height: 30px;
         }
         
+        ::slotted(img) {
+          width: 100px;
+          margin: 0 auto;
+          display: block;
+        }
+        
         section {
           margin: 0 auto;
           width: 1000px;
         }
         
         @media (max-width: 600px) {
+          :host {
+            padding: 50px 20px;
+          }
           section {
             width: 100%;
           }

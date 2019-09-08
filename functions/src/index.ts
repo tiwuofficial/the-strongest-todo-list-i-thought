@@ -9,7 +9,7 @@ const app = express();
 app.set('view engine', 'ejs');
 
 app.get('/', async (req, res) => {
-    const list = await db.collection('test').limit(3).get();
+    const list = await db.collection('todolists').limit(3).get();
     const items:object[] = [];
     list.forEach(item => {
         items.push(Object.assign(item.data(), {
@@ -18,25 +18,43 @@ app.get('/', async (req, res) => {
         }));
     });
 
-    const tagList = await db.collection('test2').orderBy('count', 'desc').limit(8).get();
+    const tagList = await db.collection('tags').orderBy('count', 'desc').limit(8).get();
     const tags:object[] = [];
     tagList.forEach(item => {
         tags.push(Object.assign(item.data(), {
             id: item.id
         }));
     });
+
+    const seo = {
+        title: 'My Best Todo List - Share The my best Todo List site',
+        type: 'website',
+        url: 'https://the-my-best-todo-list.site' + req.url,
+        description: 'This site was created to share the my best todo list that I created.Also created to learn from the todo list created by others.If you like, please post the created todo list.'
+    };
+
     res.status(200).render('index', {
         items: items,
-        tags: tags
+        tags: tags,
+        seo: seo
     });
 });
 
 app.get('/create', async (req, res) => {
-    res.status(200).render('create');
+    const seo = {
+        title: 'My Best Todo List - Share The my best Todo List site',
+        type: 'article',
+        url: 'https://the-my-best-todo-list.site' + req.url,
+        description: 'This site was created to share the my best todo list that I created.Also created to learn from the todo list created by others.If you like, please post the created todo list.',
+    };
+
+    res.status(200).render('create', {
+        seo: seo
+    });
 });
 
 app.get('/todoLists', async (req, res) => {
-    const list = await db.collection('test').get();
+    const list = await db.collection('todolists').get();
     const items:object[] = [];
     list.forEach(item => {
         items.push(Object.assign(item.data(), {
@@ -45,8 +63,16 @@ app.get('/todoLists', async (req, res) => {
         }));
     });
 
+    const seo = {
+        title: 'My Best Todo List - Share The my best Todo List site',
+        type: 'article',
+        url: 'https://the-my-best-todo-list.site' + req.url,
+        description: 'This site was created to share the my best todo list that I created.Also created to learn from the todo list created by others.If you like, please post the created todo list.',
+    };
+
     res.status(200).render('todoLists', {
-        items: items
+        items: items,
+        seo: seo
     });
 });
 
@@ -72,36 +98,53 @@ app.get('/todoLists', async (req, res) => {
 // }
 
 app.get('/todoLists/:item', async (req, res) => {
-    const item = await db.collection('test').doc(req.params.item).get();
+    const item = await db.collection('todolists').doc(req.params.item).get();
     const data:any = item.data();
     const user:any = await admin.auth().getUser(data.uid);
     // const gitHubUser = await fetchGitHubApi(`/user/${user.providerData.shift().uid}`);
+
+    const seo = {
+        title: 'My Best Todo List - Share The my best Todo List site',
+        type: 'article',
+        url: 'https://the-my-best-todo-list.site' + req.url,
+        description: 'This site was created to share the my best todo list that I created.Also created to learn from the todo list created by others.If you like, please post the created todo list.',
+    };
 
     res.status(200).render('todoListDetail', {
         item: Object.assign(data, {
             id: item.id,
             escapeTags: JSON.stringify(data.list)
         }),
-        user: user
+        user: user,
+        seo: seo
     });
 });
 
 app.get('/tags', async (req, res) => {
-    const list = await db.collection('test2').get();
+    const list = await db.collection('tags').get();
     const tags:object[] = [];
     list.forEach(item => {
         tags.push(Object.assign(item.data(), {
             id: item.id
         }));
     });
+
+    const seo = {
+        title: 'My Best Todo List - Share The my best Todo List site',
+        type: 'article',
+        url: 'https://the-my-best-todo-list.site' + req.url,
+        description: 'This site was created to share the my best todo list that I created.Also created to learn from the todo list created by others.If you like, please post the created todo list.',
+    };
+
     res.status(200).render('tags', {
-        tags: tags
+        tags: tags,
+        seo: seo
     });
 });
 
 app.get('/tags/:tag', async (req, res) => {
-    const tag = await db.collection('test2').doc(req.params.tag).get();
-    const list = await db.collection('test').where('list', 'array-contains', req.params.tag).get();
+    const tag = await db.collection('tags').doc(req.params.tag).get();
+    const list = await db.collection('todolists').where('list', 'array-contains', req.params.tag).get();
     const items:object[] = [];
     list.forEach(item => {
         items.push(Object.assign(item.data(), {
@@ -109,12 +152,41 @@ app.get('/tags/:tag', async (req, res) => {
             escapeTags: JSON.stringify(item.data().list)
         }));
     });
+
+    const seo = {
+        title: `My Best Todo List - ${req.params.tag} tag the my best Todo List site.`,
+        type: 'article',
+        url: 'https://the-my-best-todo-list.site' + req.url,
+        description: 'This site was created to share the my best todo list that I created.Also created to learn from the todo list created by others.If you like, please post the created todo list.',
+    };
+
     res.status(200).render('tagDetail', {
         tag: Object.assign(tag.data(), {
             id: tag.id
         }),
-        items: items
+        items: items,
+        seo: seo
     });
+});
+
+interface funcs {
+    generateThumbnail: string;
+    [key: string]: string;
+}
+
+const loadFunctions = (funcsObj:funcs) => {
+    console.log('loadFunctions ' + process.env.FUNCTION_NAME);
+    for (const name in funcsObj) {
+        // 全文じゃなくて前方一致にする
+        // if (!process.env.FUNCTION_NAME || process.env.FUNCTION_NAME === name) {
+        if (!process.env.FUNCTION_NAME || process.env.FUNCTION_NAME.startsWith(name)) {
+            exports[name] = require(funcsObj[name])
+        }
+    }
+};
+
+loadFunctions({
+    generateThumbnail: './generateThumbnail',
 });
 
 exports.app = functions.https.onRequest(app);

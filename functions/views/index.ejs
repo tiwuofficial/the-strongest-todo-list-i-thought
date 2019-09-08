@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>My Best Todo List</title>
     <%- include('./common/meta') %>
     <%- include('./common/firebaseHeader') %>
     <%- include('./common/script') %>
@@ -19,7 +18,9 @@
         margin-top: 20px;
       }
 
-      h2 + p {
+      h2 + p,
+      h2 + img,
+      img + p {
         margin-top: 20px;
       }
     </style>
@@ -37,6 +38,7 @@
             <mbtl-todo-list-card
               href="/todoLists/<%= item.id %>"
               src="<%= item.imageUrl %>"
+              thumbnail-src="<%= item.thumbnailImageUrl %>"
               title="<%= item.title %>"
               tags="<%= item.escapeTags %>"
             >
@@ -69,6 +71,13 @@
       <p>This site was created to share the my best todo list that I created.</p>
       <p>Also created to learn from the todo list created by others.</p>
       <p>If you like, please post the created todo list.</p>
+    </mbtl-section>
+
+    <mbtl-section class="white">
+      <h2>Creater</h2>
+
+      <img src="https://avatars2.githubusercontent.com/u/13449349?s=460" alt="tiwu avatar img">
+      <p><a href="https://twitter.com/tiwu_official" target="_blank" rel="noopener">tiwu(Taguchi Wataru)</a></p>
     </mbtl-section>
   </body>
 </html>

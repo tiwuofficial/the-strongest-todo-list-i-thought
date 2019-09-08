@@ -96,6 +96,16 @@ class Card extends HTMLElement {
         </div>
       </a>
     `;
+
+    this.shadowRoot.querySelector('img').addEventListener('error', (e) => {
+      let src = '';
+      if (this.getAttribute('thumbnail-src')) {
+        src = this.getAttribute('thumbnail-src');
+      } else {
+        src = '/img/no-img.png'
+      }
+      e.currentTarget.src = src;
+    });
   }
 }
 customElements.define('mbtl-todo-list-card', Card);

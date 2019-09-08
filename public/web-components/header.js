@@ -17,6 +17,10 @@ class Header extends HTMLElement {
           display: flex;
           align-items: center;
         }
+        
+        .item--menu {
+          display: none;
+        }
     
         .item:first-of-type {
           flex-grow: 1;

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Detail</title>
     <%- include('./common/meta') %>
     <%- include('./common/firebaseHeader') %>
     <%- include('./common/script') %>
@@ -20,6 +19,7 @@
         repository-url="<%= item.repository_url %>"
         comment="<%- item.comment %>"
         img-url="<%= item.imageUrl %>"
+        thumbnail-src="<%= item.thumbnailImageUrl %>"
         tags="<%= item.escapeTags %>"
         user-name="<%= user.displayName %>"
       ></mbtl-todo-list-detail>

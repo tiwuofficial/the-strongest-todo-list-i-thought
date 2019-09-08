@@ -17,6 +17,9 @@ class Button extends HTMLElement {
           box-sizing: border-box;
           cursor: pointer;
         }
+        ::slotted(button:disabled) {
+          background-color: #e9eced;
+        }
         @media (max-width: 600px) {
           ::slotted(button) {
             width: 100%;
